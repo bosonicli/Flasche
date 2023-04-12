@@ -1,8 +1,9 @@
 name: env-3.9
 channels:
-  - default
+  - conda-forge
 dependencies:
   - python=3.9
+  - os
   - pip
   - pip:
     - numpy
@@ -11,4 +12,3 @@ dependencies:
     - matplotlib
     - scipy
     - jupyter
-    - os
