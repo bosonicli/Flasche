@@ -1,0 +1,134 @@
+Waiting for build to start...
+Picked Git content provider.
+Cloning into '/tmp/repo2dockerpcj7zal5'...
+HEAD is now at 41a59f2 switch env to python3.7
+Building conda environment for python=3.7
+Using CondaBuildPack builder
+Step 1/50 : FROM buildpack-deps:bionic
+ ---> aeecfa359fe2
+Step 2/50 : ENV DEBIAN_FRONTEND=noninteractive
+ ---> Using cache
+ ---> 02146024e20b
+Step 3/50 : RUN apt-get -qq update &&     apt-get -qq install --yes --no-install-recommends locales > /dev/null &&     apt-get -qq purge &&     apt-get -qq clean &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 4651d4ace133
+Step 4/50 : RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen &&     locale-gen
+ ---> Using cache
+ ---> 164711f29b3b
+Step 5/50 : ENV LC_ALL=en_US.UTF-8     LANG=en_US.UTF-8     LANGUAGE=en_US.UTF-8
+ ---> Using cache
+ ---> 4e0c645118d7
+Step 6/50 : ENV SHELL=/bin/bash
+ ---> Using cache
+ ---> f17d4645a11d
+Step 7/50 : ARG NB_USER
+ ---> Using cache
+ ---> 8b30db10e19e
+Step 8/50 : ARG NB_UID
+ ---> Using cache
+ ---> 76ee3074b39a
+Step 9/50 : ENV USER=${NB_USER}     HOME=/home/${NB_USER}
+ ---> Using cache
+ ---> 536bfb25160d
+Step 10/50 : RUN groupadd         --gid ${NB_UID}         ${NB_USER} &&     useradd         --comment "Default user"         --create-home         --gid ${NB_UID}         --no-log-init         --shell /bin/bash         --uid ${NB_UID}         ${NB_USER}
+ ---> Using cache
+ ---> 812fe7828c4f
+Step 11/50 : RUN apt-get -qq update &&     apt-get -qq install --yes --no-install-recommends        less        unzip        > /dev/null &&     apt-get -qq purge &&     apt-get -qq clean &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> b245ee9a6b23
+Step 12/50 : EXPOSE 8888
+ ---> Using cache
+ ---> 7f5cf51cc634
+Step 13/50 : ENV APP_BASE=/srv
+ ---> Using cache
+ ---> 1155c3c20f38
+Step 14/50 : ENV CONDA_DIR=${APP_BASE}/conda
+ ---> Using cache
+ ---> 69a53743c823
+Step 15/50 : ENV NB_PYTHON_PREFIX=${CONDA_DIR}/envs/notebook
+ ---> Using cache
+ ---> 7c9a7bda08d9
+Step 16/50 : ENV NPM_DIR=${APP_BASE}/npm
+ ---> Using cache
+ ---> 2b369178e6b9
+Step 17/50 : ENV NPM_CONFIG_GLOBALCONFIG=${NPM_DIR}/npmrc
+ ---> Using cache
+ ---> 5e93bf39cf08
+Step 18/50 : ENV NB_ENVIRONMENT_FILE=/tmp/env/environment.lock
+ ---> Using cache
+ ---> 6e65e87581b2
+Step 19/50 : ENV MAMBA_ROOT_PREFIX=${CONDA_DIR}
+ ---> Using cache
+ ---> 5a64a4d97863
+Step 20/50 : ENV MAMBA_EXE=${CONDA_DIR}/bin/mamba
+ ---> Using cache
+ ---> e82475b096e3
+Step 21/50 : ENV CONDA_PLATFORM=linux-64
+ ---> Using cache
+ ---> 2065f2f390c3
+Step 22/50 : ENV KERNEL_PYTHON_PREFIX=${NB_PYTHON_PREFIX}
+ ---> Using cache
+ ---> 233112df12ea
+Step 23/50 : ENV PATH=${NB_PYTHON_PREFIX}/bin:${CONDA_DIR}/bin:${NPM_DIR}/bin:${PATH}
+ ---> Using cache
+ ---> a010141f33c5
+Step 24/50 : COPY --chown=1000:1000 build_script_files/-2fusr-2flib-2fpython3-2e10-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2factivate-2dconda-2esh-44e764 /etc/profile.d/activate-conda.sh
+ ---> Using cache
+ ---> 9f1963b1a456
+Step 25/50 : COPY --chown=1000:1000 build_script_files/-2fusr-2flib-2fpython3-2e10-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2fenvironment-2epy-2d3-2e7-2dlinux-2d64-2elock-27f2b2 /tmp/env/environment.lock
+ ---> Using cache
+ ---> 17255211049f
+Step 26/50 : COPY --chown=1000:1000 build_script_files/-2fusr-2flib-2fpython3-2e10-2fsite-2dpackages-2frepo2docker-2fbuildpacks-2fconda-2finstall-2dbase-2denv-2ebash-e5509f /tmp/install-base-env.bash
+ ---> Using cache
+ ---> 9f7c21a652f8
+Step 27/50 : RUN TIMEFORMAT='time: %3R' bash -c 'time /tmp/install-base-env.bash' && rm -rf /tmp/install-base-env.bash /tmp/env
+ ---> Using cache
+ ---> fe1966fc3407
+Step 28/50 : RUN mkdir -p ${NPM_DIR} && chown -R ${NB_USER}:${NB_USER} ${NPM_DIR}
+ ---> Using cache
+ ---> 124474956696
+Step 29/50 : USER root
+ ---> Using cache
+ ---> e5ee5b056e25
+Step 30/50 : ARG REPO_DIR=${HOME}
+ ---> Using cache
+ ---> 34375ed0ea06
+Step 31/50 : ENV REPO_DIR=${REPO_DIR}
+ ---> Using cache
+ ---> 5f8092227a81
+Step 32/50 : RUN if [ ! -d "${REPO_DIR}" ]; then         /usr/bin/install -o ${NB_USER} -g ${NB_USER} -d "${REPO_DIR}";     fi
+ ---> Using cache
+ ---> 5505b9fb595b
+Step 33/50 : WORKDIR ${REPO_DIR}
+ ---> Using cache
+ ---> bb9bc1632f46
+Step 34/50 : RUN chown ${NB_USER}:${NB_USER} ${REPO_DIR}
+ ---> Using cache
+ ---> 25df49224b84
+Step 35/50 : ENV PATH=${HOME}/.local/bin:${REPO_DIR}/.local/bin:${PATH}
+ ---> Using cache
+ ---> 83a6dc6fe43a
+Step 36/50 : ENV CONDA_DEFAULT_ENV=${KERNEL_PYTHON_PREFIX}
+ ---> Using cache
+ ---> 6ed10d56730c
+Step 37/50 : COPY --chown=1000:1000 src/environment.yml ${REPO_DIR}/environment.yml
+ ---> 8d735b9acfd6
+Step 38/50 : USER ${NB_USER}
+ ---> Running in 1536849bd6a6
+Removing intermediate container 1536849bd6a6
+ ---> 668d9f3d92bd
+Step 39/50 : RUN TIMEFORMAT='time: %3R' bash -c 'time ${MAMBA_EXE} env update -p ${NB_PYTHON_PREFIX} --file "environment.yml" && time ${MAMBA_EXE} clean --all -f -y && ${MAMBA_EXE} list -p ${NB_PYTHON_PREFIX} '
+ ---> Running in 153e7e5d14a4
+
+
+Looking for: ['_libgcc_mutex==0.1=main', '_openmp_mutex==5.1=1_gnu', 'anyio==3.5.0=py37h06a4308_0', 'argon2-cffi==20.1.0=py37h27cfd23_1', 'attrs==22.1.0=py37h06a4308_0', 'babel==2.11.0=py37h06a4308_0', 'backcall==0.2.0=pyhd3eb1b0_0', 'beautifulsoup4==4.11.1=py37h06a4308_0', 'blas==1.0=mkl', 'bleach==4.1.0=pyhd3eb1b0_0', 'brotli==1.0.9=h5eee18b_7', 'brotli-bin==1.0.9=h5eee18b_7', 'brotlipy==0.7.0=py37h27cfd23_1003', 'ca-certificates==2023.01.10=h06a4308_0', 'certifi==2022.12.7=py37h06a4308_0', 'cffi==1.15.1=py37h5eee18b_3', 'charset-normalizer==2.0.4=pyhd3eb1b0_0', 'cryptography==39.0.1=py37h9ce1e76_0', 'cycler==0.11.0=pyhd3eb1b0_0', 'dbus==1.13.18=hb2f20db_0', 'debugpy==1.5.1=py37h295c915_0', 'decorator==5.1.1=pyhd3eb1b0_0', 'defusedxml==0.7.1=pyhd3eb1b0_0', 'entrypoints==0.4=py37h06a4308_0', 'expat==2.4.9=h6a678d5_0', 'fftw==3.3.9=h27cfd23_1', 'fontconfig==2.14.1=h52c9d5c_1', 'fonttools==4.25.0=pyhd3eb1b0_0', 'freetype==2.12.1=h4a9f257_0', 'giflib==5.2.1=h5eee18b_3', 'glib==2.69.1=he621ea3_2', 'gst-plugins-base==1.14.1=h6a678d5_1', 'gstreamer==1.14.1=h5eee18b_1', 'icu==58.2=he6710b0_3', 'idna==3.4=py37h06a4308_0', 'importlib-metadata==4.11.3=py37h06a4308_0', 'importlib_metadata==4.11.3=hd3eb1b0_0', 'importlib_resources==5.2.0=pyhd3eb1b0_1', 'intel-openmp==2021.4.0=h06a4308_3561', 'ipykernel==6.15.2=py37h06a4308_0', 'ipython==7.31.1=py37h06a4308_1', 'ipython_genutils==0.2.0=pyhd3eb1b0_1', 'ipywidgets==7.6.5=pyhd3eb1b0_1', 'jedi==0.18.1=py37h06a4308_1', 'jinja2==3.1.2=py37h06a4308_0', 'jpeg==9e=h5eee18b_1', 'json5==0.9.6=pyhd3eb1b0_0', 'jsonschema==4.17.3=py37h06a4308_0', 'jupyter==1.0.0=py37h06a4308_8', 'jupyter_client==7.4.9=py37h06a4308_0', 'jupyter_console==6.4.4=py37h06a4308_0', 'jupyter_core==4.11.2=py37h06a4308_0', 'jupyter_server==1.23.4=py37h06a4308_0', 'jupyterlab==3.5.3=py37h06a4308_0', 'jupyterlab_pygments==0.1.2=py_0', 'jupyterlab_server==2.19.0=py37h06a4308_0', 'jupyterlab_widgets==1.0.0=pyhd3eb1b0_1', 'kiwisolver==1.4.4=py37h6a678d5_0', 'krb5==1.19.4=h568e23c_0', 'lcms2==2.12=h3be6417_0', 'ld_impl_linux-64==2.38=h1181459_1', 'lerc==3.0=h295c915_0', 'libbrotlicommon==1.0.9=h5eee18b_7', 'libbrotlidec==1.0.9=h5eee18b_7', 'libbrotlienc==1.0.9=h5eee18b_7', 'libclang==10.0.1=default_hb85057a_2', 'libdeflate==1.17=h5eee18b_0', 'libedit==3.1.20221030=h5eee18b_0', 'libevent==2.1.12=h8f2d780_0', 'libffi==3.4.2=h6a678d5_6', 'libgcc-ng==11.2.0=h1234567_1', 'libgfortran-ng==11.2.0=h00389a5_1', 'libgfortran5==11.2.0=h1234567_1', 'libgomp==11.2.0=h1234567_1', 'libllvm10==10.0.1=hbcb73fb_5', 'libpng==1.6.39=h5eee18b_0', 'libpq==12.9=h16c4e8d_3', 'libsodium==1.0.18=h7b6447c_0', 'libstdcxx-ng==11.2.0=h1234567_1', 'libtiff==4.5.0=h6a678d5_2', 'libuuid==1.41.5=h5eee18b_0', 'libwebp==1.2.4=h11a3e52_1', 'libwebp-base==1.2.4=h5eee18b_1', 'libxcb==1.15=h7f8727e_0', 'libxkbcommon==1.0.1=hfa300c1_0', 'libxml2==2.9.14=h74e7548_0', 'libxslt==1.1.35=h4e12654_0', 'lz4-c==1.9.4=h6a678d5_0', 'markupsafe==2.1.1=py37h7f8727e_0', 'matplotlib==3.5.3=py37h06a4308_0', 'matplotlib-base==3.5.3=py37hf590b9c_0', 'matplotlib-inline==0.1.6=py37h06a4308_0', 'mistune==0.8.4=py37h14c3975_1001', 'mkl==2021.4.0=h06a4308_640', 'mkl-service==2.4.0=py37h7f8727e_0', 'mkl_fft==1.3.1=py37hd3c417c_0', 'mkl_random==1.2.2=py37h51133e4_0', 'munkres==1.1.4=py_0', 'nbclassic==0.5.2=py37h06a4308_0', 'nbclient==0.5.13=py37h06a4308_0', 'nbconvert==6.4.4=py37h06a4308_0', 'nbformat==5.7.0=py37h06a4308_0', 'ncurses==6.4=h6a678d5_0', 'nest-asyncio==1.5.6=py37h06a4308_0', 'notebook==6.5.2=py37h06a4308_0', 'notebook-shim==0.2.2=py37h06a4308_0', 'nspr==4.33=h295c915_0', 'nss==3.74=h0370c37_0', 'numpy==1.21.5=py37h6c91a56_3', 'numpy-base==1.21.5=py37ha15fc14_3', 'openssl==1.1.1t=h7f8727e_0', 'packaging==22.0=py37h06a4308_0', 'pandocfilters==1.5.0=pyhd3eb1b0_0', 'parso==0.8.3=pyhd3eb1b0_0', 'pcre==8.45=h295c915_0', 'pexpect==4.8.0=pyhd3eb1b0_3', 'pickleshare==0.7.5=pyhd3eb1b0_1003', 'pillow==9.4.0=py37h6a678d5_0', 'pip==22.3.1=py37h06a4308_0', 'pkgutil-resolve-name==1.3.10=py37h06a4308_0', 'ply==3.11=py37_0', 'prometheus_client==0.14.1=py37h06a4308_0', 'prompt-toolkit==3.0.36=py37h06a4308_0', 'prompt_toolkit==3.0.36=hd3eb1b0_0', 'psutil==5.9.0=py37h5eee18b_0', 'ptyprocess==0.7.0=pyhd3eb1b0_2', 'pycparser==2.21=pyhd3eb1b0_0', 'pygments==2.11.2=pyhd3eb1b0_0', 'pyopenssl==23.0.0=py37h06a4308_0', 'pyparsing==3.0.9=py37h06a4308_0', 'pyqt==5.15.7=py37h6a678d5_1', 'pyqt5-sip==12.11.0=py37h6a678d5_1', 'pyrsistent==0.18.0=py37heee7806_0', 'pysocks==1.7.1=py37_1', 'python==3.7.16=h7a1cb2a_0', 'python-dateutil==2.8.2=pyhd3eb1b0_0', 'python-fastjsonschema==2.16.2=py37h06a4308_0', 'pytz==2022.7=py37h06a4308_0', 'pyzmq==23.2.0=py37h6a678d5_0', 'qt-main==5.15.2=h327a75a_7', 'qt-webengine==5.15.9=hd2b0992_4', 'qtconsole==5.4.0=py37h06a4308_0', 'qtpy==2.2.0=py37h06a4308_0', 'qtwebkit==5.212=h4eab89a_4', 'readline==8.2=h5eee18b_0', 'requests==2.28.1=py37h06a4308_0', 'scipy==1.7.3=py37h6c91a56_2', 'send2trash==1.8.0=pyhd3eb1b0_1', 'setuptools==65.6.3=py37h06a4308_0', 'sip==6.6.2=py37h6a678d5_0', 'six==1.16.0=pyhd3eb1b0_1', 'sniffio==1.2.0=py37h06a4308_1', 'soupsieve==2.3.2.post1=py37h06a4308_0', 'sqlite==3.41.1=h5eee18b_0', 'terminado==0.17.1=py37h06a4308_0', 'testpath==0.6.0=py37h06a4308_0', 'tk==8.6.12=h1ccaba5_0', 'toml==0.10.2=pyhd3eb1b0_0', 'tomli==2.0.1=py37h06a4308_0', 'tornado==6.2=py37h5eee18b_0', 'traitlets==5.7.1=py37h06a4308_0', 'typing_extensions==4.3.0=py37h06a4308_0', 'urllib3==1.26.14=py37h06a4308_0', 'wcwidth==0.2.5=pyhd3eb1b0_0', 'webencodings==0.5.1=py37_1', 'websocket-client==0.58.0=py37h06a4308_4', 'wheel==0.38.4=py37h06a4308_0', 'widgetsnbextension==3.5.2=py37h06a4308_0', 'xz==5.2.10=h5eee18b_1', 'zeromq==4.3.4=h2531618_0', 'zipp==3.11.0=py37h06a4308_0', 'zlib==1.2.13=h5eee18b_0', 'zstd==1.5.4=hc292b87_0']
+
+
+Could not solve for environment specs
+The following packages are incompatible
+├─ libgcc-ng ==11.2.0 h1234567_1 is requested and can be installed;
+├─ nbconvert ==6.4.4 py37h06a4308_0 is requested and can be installed;
+└─ zlib ==1.2.13 h5eee18b_0 is requested and can be installed.
+time: 35.883
+Removing intermediate container 153e7e5d14a4
+The command '/bin/sh -c TIMEFORMAT='time: %3R' bash -c 'time ${MAMBA_EXE} env update -p ${NB_PYTHON_PREFIX} --file "environment.yml" && time ${MAMBA_EXE} clean --all -f -y && ${MAMBA_EXE} list -p ${NB_PYTHON_PREFIX} '' returned a non-zero code: 1
